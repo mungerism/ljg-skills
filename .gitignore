@@ -5,7 +5,6 @@
 !.gitignore
 !README.md
 !AGENTS.md
-!CLAUDE.md
 
 # 保留插件清单
 !.claude-plugin/

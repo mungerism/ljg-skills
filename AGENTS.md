@@ -5,6 +5,7 @@
 - This fork is maintained for Codex first.
 - The long-lived Codex compatibility branch is `codex-main`.
 - Install and update this repository through `npx skills`, not by copying directories manually.
+- Repository instructions should stay semantically aligned with the original `CLAUDE.md` guidance from upstream; only make intentional deviations when Codex compatibility requires them.
 
 ## Installation
 

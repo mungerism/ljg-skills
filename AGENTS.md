@@ -1,43 +1,120 @@
-# Repository Guidelines
+# AGENTS.md
+
+This file provides guidance to Codex when working with code in this repository.
 
 ## Overview
 
-- This fork is maintained for Codex first.
-- The long-lived Codex compatibility branch is `codex-main`.
-- Install and update this repository through `npx skills`, not by copying directories manually.
-- Repository instructions should stay semantically aligned with the original `CLAUDE.md` guidance from upstream; only make intentional deviations when Codex compatibility requires them.
+This is a personal Codex skills repository. Each skill is a self-contained directory that can be installed through `npx skills` and used from Codex.
 
-## Installation
+## Repository Structure
 
-- Full install:
-  `npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex`
-- Single skill install:
-  `npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex --skill <skill-name>`
-- `ljg-card` dependencies:
-  `bash scripts/install.sh`
+```text
+ljg-skills/
+├── skills/
+│   └── ljg-*/          # Each skill directory contains SKILL.md and optional references/assets/scripts
+├── scripts/
+├── README.md
+├── AGENTS.md
+└── .gitignore          # Ignores everything except tracked root files, scripts, and skills
+```
 
-## Structure Rules
+## Skill Format
 
-- Keep skills under `skills/<name>/`.
-- Every skill directory must contain a valid `SKILL.md` with at least `name` and `description` in frontmatter.
-- Preserve skill names and directory names unless there is a migration plan that keeps `npx skills` discovery stable.
-- Keep `.claude-plugin/` only as a compatibility artifact; do not treat it as the primary integration path.
+Each `SKILL.md` follows this structure:
 
-## Compatibility Rules
+```yaml
+---
+name: skill-name
+description: "What this skill does. Use when user says..."
+user_invocable: true|false
+version: "x.x.x"
+---
 
-- Do not introduce hard-coded Claude-specific paths such as `~/.claude/skills/...`.
-- Prefer relative references inside skill docs, references, scripts, and templates.
-- Flow skills must remain usable in Codex without assuming Claude-only delegation semantics; default to serial execution unless concurrency is explicitly safe.
-- If a skill depends on optional external capabilities, document the fallback behavior in the skill itself.
+# Skill content in markdown...
+```
 
-## Output Contracts
+## Skill Inventory
 
-- Text and org-mode outputs should continue to target `~/Documents/notes/` unless the skill explicitly defines another path.
-- Visual outputs should continue to target `~/Downloads/`.
-- Do not change output filenames or public invocation names casually; treat them as user-facing contracts.
+| Skill | Purpose | External Dependencies |
+|-------|---------|----------------------|
+| `ljg-card` | Content → PNG visuals (long cards, infographs, posters) | Node.js + Playwright |
+| `ljg-paper` | Academic paper analysis pipeline | None |
+| `ljg-paper-flow` | Paper workflow (paper + card combined) | None |
+| `ljg-plain` | Plain language rewriter | None |
+| `ljg-skill-map` | Visual overview of installed skills | Bash |
+| `ljg-word` | English word deep-dive | None |
+| `ljg-writes` | Writing engine for thinking through ideas | None |
 
-## Maintenance
+## Commands
 
-- Sync upstream changes into the fork's default branch first, then merge or rebase into `codex-main`.
-- Validate with `npx skills add <source> --list` before publishing branch changes meant for installation.
-- For runtime-dependent skills such as `ljg-card`, verify that dependency failure messages remain actionable.
+### Install ljg-card Dependencies
+
+`ljg-card` requires Playwright for screenshot capture:
+
+```bash
+cd skills/ljg-card && npm install && npx playwright install chromium
+```
+
+### Test ljg-skill-map Scanner
+
+```bash
+bash skills/ljg-skill-map/scripts/scan.sh
+```
+
+### Install Skills (for users)
+
+```bash
+npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex
+```
+
+## Architecture Notes
+
+### Skill Invocation
+
+- Skills with `user_invocable: true` can be triggered via `/skill-name` or natural language
+- Trigger phrases are defined in each skill's `description` field
+- Skills can call other skills when the runtime supports skill composition; default to simpler serial execution when in doubt
+
+### Content Processing Pipeline
+
+Several skills share a common pattern for content ingestion:
+- **URL** → Read webpage content
+- **File path** → Read file content
+- **Raw text** → Direct use
+
+### ljg-card Architecture
+
+The most complex skill with multiple rendering modes:
+
+1. **HTML Templates**: Stored in `assets/` (`long_template.html`, `infograph_template.html`, `poster_template.html`)
+2. **Capture Script**: `assets/capture.js` uses Playwright to screenshot HTML → PNG
+3. **Reference Docs**: `references/taste.md` (design guidelines), `references/mode-*.md` (mode-specific instructions)
+4. **Output**: PNG files written to `~/Downloads/`
+
+### Shared Conventions
+
+**Org-mode output** (`ljg-paper`, `ljg-plain`, `ljg-writes`):
+- Bold: `*text*` (single asterisk, not `**`)
+- Filenames: `{timestamp}--{title}__{type}.org`
+- Output directory: `~/Documents/notes/`
+- Timestamps: `date +%Y%m%dT%H%M%S`
+
+**ASCII Art**:
+- Allowed: `+ - | / \ > < v ^ * = ~ . : # [ ] ( ) _ , ; ! ' "`
+- Forbidden: Unicode box-drawing characters
+
+## Development Guidelines
+
+- Skills are atomic units; each skill directory is self-contained
+- Version numbers are manually maintained in `SKILL.md` frontmatter
+- The `.gitignore` ignores all files by default; explicitly unignore with `!pattern`
+- When modifying skill logic, update both the `SKILL.md` and any referenced files in `references/`
+- Keep instructions semantically aligned with the original upstream `CLAUDE.md` guidance unless Codex compatibility requires a change
+
+## Testing Changes
+
+After modifying a skill:
+1. Validate discovery with `npx skills add <source> --list`
+2. Install to Codex with `npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex`
+3. Restart Codex to reload skills
+4. Test via natural language trigger or `/skill-name`

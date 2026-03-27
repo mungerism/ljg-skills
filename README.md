@@ -1,6 +1,6 @@
 # ljg-skills
 
-我的 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 自定义技能集。
+我的 Codex 优先技能集，使用 [`npx skills`](https://github.com/vercel-labs/skills) 统一安装和更新。
 
 ## 技能
 
@@ -12,7 +12,7 @@
 | **ljg-plain** | 白话引擎 — 把任何内容改写到聪明的十二岁小孩也能懂 |
 | **ljg-rank** | 降秩引擎 — 给一个领域，找出背后真正撑着它的几根独立的力。现象砍到不可再少的生成器，砍完能把现象一个个生回来，才算数。 |
 | **ljg-x-download** | X 媒体下载 — 将 X/Twitter 帖子中的图片和视频下载到 ~/Downloads |
-| **ljg-skill-map** | 技能地图 — 扫描所有已安装技能，渲染可视化总览 |
+| **ljg-skill-map** | 技能地图 — 扫描所有已安装的 Codex skills，渲染可视化总览 |
 | **ljg-word** | 英语单词精通 — 深度拆解一个英语单词的核心语义和顿悟时刻 |
 | **ljg-writes** | 写作引擎 — 带着一个观点出发，在写的过程中把它想透 |
 | **ljg-roundtable** | 圆桌讨论 — 以求真为目标的结构化多人辩证对话框架，主持人引导真实历史/当代人物进行多轮深度交锋，每轮生成 ASCII 思考框架图，最终输出知识网络。 |
@@ -26,26 +26,48 @@
 |--------|--------|------|
 | **ljg-paper-flow** | ljg-paper → ljg-card | 读论文 + 做卡片一气呵成 |
 | **ljg-word-flow** | ljg-word → ljg-card -i | 单词深度分析 + 信息图卡片一气呵成 |
-| **ljg-travel** | Research → ContentAnalysis → ljg-card | 城市文明研究 + org文档 + 便携卡片一气呵成 |
+| **ljg-travel** | Research → ContentAnalysis → ljg-card | 城市文明研究 + org 文档 + 便携卡片一气呵成 |
 
 ## 安装
 
 ```bash
-git clone https://github.com/lijigang/ljg-skills.git ~/.claude/plugins/ljg-skills
+npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex
 ```
 
-然后重启 Claude Code。
+安装单个 skill：
+
+```bash
+npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex --skill ljg-word
+```
+
+查看、删除、更新：
+
+```bash
+npx skills list -g -a codex
+npx skills remove -g -a codex ljg-word
+npx skills check
+npx skills update
+```
+
+安装后重启 Codex 以重新加载 skills。
 
 ### ljg-card 依赖
 
 `ljg-card` 需要 Playwright 来截图：
 
 ```bash
-cd ~/.claude/plugins/ljg-skills && bash scripts/install.sh
+git clone --branch codex-main https://github.com/mungerism/ljg-skills.git ~/Code/Repos/Personal/ljg-skills-codex
+cd ~/Code/Repos/Personal/ljg-skills-codex && bash scripts/install.sh
 ```
 
 或手动安装：
 
 ```bash
-cd ~/.claude/plugins/ljg-skills/skills/ljg-card && npm install && npx playwright install chromium
+cd ~/Code/Repos/Personal/ljg-skills-codex/skills/ljg-card && npm install && npx playwright install chromium
 ```
+
+## 维护分支
+
+- 上游同步来源：`https://github.com/lijigang/ljg-skills`
+- Codex 维护分支：`codex-main`
+- `npx skills` 只指向 `codex-main`，不要从临时分支安装

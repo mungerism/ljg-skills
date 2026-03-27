@@ -19,7 +19,7 @@ async function main() {
   try {
     chromium = require('playwright').chromium;
   } catch {
-    console.error('Playwright not found. Run: npx playwright install chromium');
+    console.error('Playwright not found. Run from skills/ljg-card: npm install && npx playwright install chromium');
     process.exit(1);
   }
 

@@ -4,6 +4,7 @@
 # 保留根目录文件
 !.gitignore
 !README.md
+!AGENTS.md
 !CLAUDE.md
 
 # 保留插件清单

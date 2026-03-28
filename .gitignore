@@ -10,6 +10,11 @@
 !.claude-plugin/
 !.claude-plugin/**
 
+# 保留平台提示词
+!prompts/
+!prompts/**/
+!prompts/**/*
+
 # 保留脚本
 !scripts/
 !scripts/**

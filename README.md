@@ -5,7 +5,7 @@
 ## 仓库约定
 
 - `skills/` 目录下只放可被 `npx skills` 发现和安装的技能。
-- `prompts/` 目录下放平台提示词资产，例如 GPTs / Gems 用的 system prompt；这些文件不会作为 skill 被发现。
+- `prompts/` 目录下放平台提示词资产，例如 GPTs 用的 system prompt；这些文件不会作为 skill 被发现。
 
 ## 技能
 

@@ -22,7 +22,7 @@ Assistant: [Launches roundtable discussion on free will]
 ## Maintenance Note
 
 - 此文件是 Codex Skill 版本的唯一执行入口。
-- 面向 GPTs / Gems 的平台提示词单独维护在仓库根目录 `prompts/roundtable/`。
+- 面向通用平台的提示词单独维护在仓库根目录 `prompts/roundtable-prompt.md`。
 - 平台提示词不属于 skill 运行依赖，也不应放入 `skills/ljg-roundtable/` 目录内。
 
 ## Instructions

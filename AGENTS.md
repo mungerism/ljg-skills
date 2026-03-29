@@ -1,22 +1,21 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex when working with code in this repository.
 
 ## Overview
 
-This is a personal Claude Code skills repository. Each skill is a self-contained directory that can be installed to `~/.claude/skills/` to extend Claude Code's capabilities.
+This is a personal Codex skills repository. Each skill is a self-contained directory that can be installed through `npx skills` and used from Codex.
 
 ## Repository Structure
 
-```
+```text
 ljg-skills/
-├── ljg-*/              # Each skill is a directory with "ljg-" prefix
-│   ├── SKILL.md        # Skill definition with YAML frontmatter
-│   ├── references/     # Reference docs for complex skills
-│   ├── assets/         # Templates, images, scripts
-│   └── scripts/        # Helper scripts (bash, node)
+├── skills/
+│   └── ljg-*/          # Each skill directory contains SKILL.md and optional references/assets/scripts
+├── scripts/
 ├── README.md
-└── .gitignore          # Ignores everything except ljg-*/ and specific files
+├── AGENTS.md
+└── .gitignore          # Ignores everything except tracked root files, scripts, and skills
 ```
 
 ## Skill Format
@@ -53,21 +52,19 @@ version: "x.x.x"
 `ljg-card` requires Playwright for screenshot capture:
 
 ```bash
-cd ljg-card && npm install && npx playwright install chromium
+cd skills/ljg-card && npm install && npx playwright install chromium
 ```
 
 ### Test ljg-skill-map Scanner
 
 ```bash
-bash ljg-skill-map/scripts/scan.sh
+bash skills/ljg-skill-map/scripts/scan.sh
 ```
 
 ### Install Skills (for users)
 
 ```bash
-# Copy all skills to Claude Code
-mkdir -p ~/.claude/skills
-cp -r ljg-* ~/.claude/skills/
+npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex
 ```
 
 ## Architecture Notes
@@ -76,27 +73,27 @@ cp -r ljg-* ~/.claude/skills/
 
 - Skills with `user_invocable: true` can be triggered via `/skill-name` or natural language
 - Trigger phrases are defined in each skill's `description` field
-- Skills can call other skills via the Skill tool
+- Skills can call other skills when the runtime supports skill composition; default to simpler serial execution when in doubt
 
 ### Content Processing Pipeline
 
 Several skills share a common pattern for content ingestion:
-- **URL** → WebFetch
-- **File path** → Read tool
+- **URL** → Read webpage content
+- **File path** → Read file content
 - **Raw text** → Direct use
 
 ### ljg-card Architecture
 
 The most complex skill with multiple rendering modes:
 
-1. **HTML Templates**: Stored in `assets/` (long_template.html, infograph_template.html, poster_template.html)
+1. **HTML Templates**: Stored in `assets/` (`long_template.html`, `infograph_template.html`, `poster_template.html`)
 2. **Capture Script**: `assets/capture.js` uses Playwright to screenshot HTML → PNG
 3. **Reference Docs**: `references/taste.md` (design guidelines), `references/mode-*.md` (mode-specific instructions)
 4. **Output**: PNG files written to `~/Downloads/`
 
 ### Shared Conventions
 
-**Org-mode output** (ljg-paper, ljg-plain, ljg-writes):
+**Org-mode output** (`ljg-paper`, `ljg-plain`, `ljg-writes`):
 - Bold: `*text*` (single asterisk, not `**`)
 - Filenames: `{timestamp}--{title}__{type}.org`
 - Output directory: `~/Documents/notes/`
@@ -108,14 +105,16 @@ The most complex skill with multiple rendering modes:
 
 ## Development Guidelines
 
-- Skills are atomic units—each skill directory is self-contained
-- Version numbers are manually maintained in SKILL.md frontmatter
+- Skills are atomic units; each skill directory is self-contained
+- Version numbers are manually maintained in `SKILL.md` frontmatter
 - The `.gitignore` ignores all files by default; explicitly unignore with `!pattern`
-- When modifying skill logic, update both the SKILL.md and any referenced files in `references/`
+- When modifying skill logic, update both the `SKILL.md` and any referenced files in `references/`
+- Keep instructions semantically aligned with the original upstream `CLAUDE.md` guidance unless Codex compatibility requires a change
 
 ## Testing Changes
 
 After modifying a skill:
-1. Copy to `~/.claude/skills/`
-2. Restart Claude Code to reload skills
-3. Test via natural language trigger or `/skill-name`
+1. Validate discovery with `npx skills add <source> --list`
+2. Install to Codex with `npx skills add https://github.com/mungerism/ljg-skills/tree/codex-main -g -a codex`
+3. Restart Codex to reload skills
+4. Test via natural language trigger or `/skill-name`

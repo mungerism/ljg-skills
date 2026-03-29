@@ -25,7 +25,7 @@ user_invocable: true
 
 缩短链接（t.co）先解析：`curl -Ls -o /dev/null -w '%{url_effective}' "SHORT_URL"`
 
-如果用户没有提供 URL，用 AskUserQuestion 要求提供。
+如果用户没有提供 URL，直接向用户索取 URL。
 
 ### 2. 尝试直接下载（视频优先）
 

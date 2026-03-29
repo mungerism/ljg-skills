@@ -7,7 +7,7 @@ version: "1.0.1"
 
 # ljg-word-flow: 词卡
 
-一条命令完成：解词 → 铸信息图。支持多词并行。
+一条命令完成：解词 → 铸信息图。默认串行处理多个单词，优先保证输出稳定。
 
 ## 模式
 
@@ -34,15 +34,15 @@ version: "1.0.1"
 
 **步骤 A — 解词（ljg-word）：**
 
-调用 Skill tool 执行 `ljg-word`，传入单词。在对话中输出 Markdown 解析结果。
+调用 `ljg-word`，传入单词。在对话中输出 Markdown 解析结果。
 
 **步骤 B — 铸信息图（ljg-card -i）：**
 
-以步骤 A 的解析内容为输入，调用 Skill tool 执行 `ljg-card -i`。生成 PNG 文件到 `~/Downloads/`。
+以步骤 A 的解析内容为输入，调用 `ljg-card -i`。生成 PNG 文件到 `~/Downloads/`。
 
-### 3. 多词并行
+### 3. 多词处理策略
 
-多个单词时，每个单词启动一个 Agent subagent 并行处理（每个 subagent 内部 A→B 串行）。
+多个单词时，默认逐个处理。只有在运行环境明确支持并发委托且不会影响稳定性时，才允许并行。
 
 ### 4. 汇总报告
 

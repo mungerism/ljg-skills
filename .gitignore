@@ -4,11 +4,16 @@
 # 保留根目录文件
 !.gitignore
 !README.md
-!CLAUDE.md
+!AGENTS.md
 
 # 保留插件清单
 !.claude-plugin/
 !.claude-plugin/**
+
+# 保留平台提示词
+!prompts/
+!prompts/**/
+!prompts/**/*
 
 # 保留脚本
 !scripts/

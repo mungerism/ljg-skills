@@ -19,12 +19,18 @@ User: 圆桌 自由意志是否存在？
 Assistant: [Launches roundtable discussion on free will]
 </example>
 
+## Maintenance Note
+
+- 此文件是 Codex Skill 版本的唯一执行入口。
+- 面向 GPTs / Gems 的平台提示词单独维护在仓库根目录 `prompts/roundtable/`。
+- 平台提示词不属于 skill 运行依赖，也不应放入 `skills/ljg-roundtable/` 目录内。
+
 ## Instructions
 
 为了执行本项技能，请严格按照以下步骤操作：
 
 1. **读取参考资料**
-   读取 `~/.claude/skills/ljg-roundtable/references/original-prompt.org` 了解原始框架设计意图。
+   读取 `references/original-prompt.org` 了解原始框架设计意图。
 
 2. **解析议题**
    从用户输入中提取核心议题。如果用户只说"圆桌讨论"未给议题，询问议题。

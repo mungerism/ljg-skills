@@ -28,9 +28,9 @@ version: "1.7.0"
 
 ### 获取内容
 
-- URL --> WebFetch 获取
+- URL --> 读取网页内容
 - 粘贴文本 --> 直接使用
-- 文件路径 --> Read 获取
+- 文件路径 --> 读取本地文件
 
 ### 文件命名
 
@@ -39,14 +39,16 @@ version: "1.7.0"
 ### 截图工具
 
 ```bash
-node ~/.claude/skills/ljg-card/assets/capture.js <html> <png> <width> <height> [fullpage]
+node skills/ljg-card/assets/capture.js <html> <png> <width> <height> [fullpage]
 ```
 
-依赖：`~/.claude/skills/ljg-card/node_modules/` 中的 playwright。如报错：
+依赖：在 `skills/ljg-card/` 目录安装 `playwright`。如报错，先进入该目录安装依赖：
 
 ```bash
-cd ~/.claude/skills/ljg-card && npm install playwright && npx playwright install chromium
+cd skills/ljg-card && npm install && npx playwright install chromium
 ```
+
+如果当前工作目录不是本仓库根目录，先定位本 skill 目录，再运行同样的安装命令。
 
 ### arxiv 检测
 

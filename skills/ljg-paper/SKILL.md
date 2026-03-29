@@ -81,7 +81,7 @@ version: "4.3.0"
 
 ### 1. 获取内容
 
-- arxiv URL → WebFetch
+- arxiv URL → 读取网页内容
 - PDF → Read（注意 pages 参数限制）
 - 本地文件 → Read
 - 论文名称 → WebSearch

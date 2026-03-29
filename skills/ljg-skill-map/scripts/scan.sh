@@ -2,7 +2,8 @@
 # Scan all installed skills, extract frontmatter metadata
 # Output: JSON array
 
-SKILLS_DIR="${HOME}/.claude/skills"
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+SKILLS_DIR="${CODEX_HOME}/skills"
 first=1
 echo "["
 
